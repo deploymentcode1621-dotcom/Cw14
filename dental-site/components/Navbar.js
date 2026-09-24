@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { siteConfig } from "@/lib/siteConfig";
 import { PhoneIcon } from "./Icons";
@@ -15,15 +16,22 @@ const links = [
   { href: "/contact", label: "Contact" },
 ];
 
-// Simple monogram/tooth mark so the brand has an icon, not just text.
-// Swap this for an <img src="/logo.svg" /> the moment you have a real logo file.
+// Set to false if your logo image already contains the clinic name,
+// so the name isn't shown twice.
+const SHOW_NAME_TEXT = true;
+
+// File lives at public/images/Logo.jpeg and is served from /images/Logo.jpeg.
+// The name is case-sensitive on Linux hosts such as Vercel.
 function LogoMark() {
   return (
-    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand text-white">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-        <path d="M12 2c-2.4 0-4.2 1-5.6 1-1.6 0-2.9 1.4-2.9 3.6 0 2.6.6 5.4 1.5 7.8.7 1.9 1.3 4.4 2.7 4.4 1.3 0 1.2-2.6 1.6-4.3.3-1.2.8-2 1.6-2s1.3.8 1.6 2c.4 1.7.3 4.3 1.6 4.3 1.4 0 2-2.5 2.7-4.4.9-2.4 1.5-5.2 1.5-7.8 0-2.2-1.3-3.6-2.9-3.6-1.4 0-3.2-1-5.4-1z" />
-      </svg>
-    </span>
+    <Image
+      src="/images/Logo.png"
+      alt={`${siteConfig.clinicName} logo`}
+      width={160}
+      height={48}
+      priority
+      className="h-10 w-auto shrink-0 rounded-lg object-contain"
+    />
   );
 }
 
@@ -53,14 +61,16 @@ export default function Navbar() {
           onClick={() => setOpen(false)}
         >
           <LogoMark />
-          <span className="flex min-w-0 flex-col leading-tight">
-            <span className="font-display truncate text-base font-semibold text-ink sm:text-lg">
-              {siteConfig.clinicName}
+          {SHOW_NAME_TEXT && (
+            <span className="flex min-w-0 flex-col leading-tight">
+              <span className="font-display truncate text-base font-semibold text-ink sm:text-lg">
+                {siteConfig.clinicName}
+              </span>
+              <span className="truncate text-[10px] uppercase tracking-wide text-muted">
+                {siteConfig.city}
+              </span>
             </span>
-            <span className="truncate text-[10px] uppercase tracking-wide text-muted">
-              {siteConfig.city}
-            </span>
-          </span>
+          )}
         </Link>
 
         {/* Desktop nav — only from xl up, so nothing has to fight for space below that */}
