@@ -109,31 +109,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Clinic video */}
-      <section className="py-16 md:py-20">
-        <div className="container-page">
-          <p className="text-sm font-medium text-brand">Take a look inside</p>
-          <h2 className="font-display mt-2 text-3xl md:text-4xl font-semibold text-ink">
-            A quick tour of the clinic
-          </h2>
-          <p className="mt-3 max-w-lg text-[15px] leading-7 text-muted">
-            A short walkthrough of the space before your first visit — replace
-            this with a real clinic tour whenever you have one filmed.
-          </p>
-          <div className="mt-8 overflow-hidden rounded-3xl border border-line">
-            <video
-              className="w-full aspect-video"
-              controls
-              muted
-              loop
-              playsInline
-              poster="/images/clinic-exterior.jpg"
-            >
-              <source src="/videos/clinicintro.mp4" type="video/mp4" />
-            </video>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Services preview */}
       <section className="py-16 md:py-20">
