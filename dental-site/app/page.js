@@ -10,74 +10,204 @@ export const metadata = {
   description: `${siteConfig.tagline}. Modern dental care in ${siteConfig.city} — book your visit today.`,
 };
 
+// ---- Easy-to-edit hero stats. Move these into siteConfig later if you like. ----
+const HERO_RATING = siteConfig.rating ?? "4.9";
+const HERO_REVIEWS = siteConfig.reviewCount ?? "500+";
+const HERO_PATIENTS = siteConfig.patientsCount ?? "5000+";
+const HERO_YEARS = siteConfig.yearsExperience ?? "15+";
+
+// Before/after photos for the floating card. Point these at real patient
+// photos (with consent) in /public/images — falling back to existing
+// images so nothing breaks if you haven't added them yet.
+const BEFORE_IMG = siteConfig.beforeAfter?.before ?? "/images/before-smile.jpg";
+const AFTER_IMG = siteConfig.beforeAfter?.after ?? "/images/after-smile.jpg";
+
+// Main hero photo — full-bleed image on the right side of the hero.
+// IMPORTANT: this filename must match EXACTLY what's in /public/images
+// (case + extension). If your file is hero-doctor-female.png, change the
+// line below to end in .png — a mismatch is the #1 cause of a "blurry"
+// or missing hero photo.
+const HERO_PHOTO = siteConfig.heroPhoto ?? "/images/hero-doctor-female.jpg";
+
+function StarIcon({ className = "h-4 w-4" }) {
+  return (
+    <svg viewBox="0 0 20 20" fill="currentColor" className={className}>
+      <path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8L10 1.5z" />
+    </svg>
+  );
+}
+
 export default function HomePage() {
   const featuredServices = siteConfig.services.slice(0, 6);
+  const quickServices = siteConfig.services.slice(0, 4);
 
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-line">
-        <div className="container-page grid gap-12 py-14 md:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <div>
-            <p className="text-sm font-medium text-brand">
-              Dentist in {siteConfig.city}
-            </p>
-            <h1 className="font-display mt-4 text-[2.6rem] leading-[1.08] md:text-6xl font-semibold text-ink">
-              A calmer visit to the dentist, right here in Latur.
-            </h1>
-            <p className="mt-5 max-w-md text-[17px] leading-7 text-muted">
-              {siteConfig.clinicName} brings together modern equipment,
-              unhurried explanations, and gentle care — for check-ups,
-              root canals, braces, and full smile makeovers.
-            </p>
+      <section className="relative overflow-hidden bg-surface-2/40">
+        {/* Full-bleed photo, pinned to the right edge, fading into the
+            text side with a gradient so it reads as one seamless hero
+            instead of a photo "card". Hidden on mobile (simplified image
+            below takes over there). */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] lg:block">
+          <SitePhoto
+            src={HERO_PHOTO}
+            alt="Female dentist smiling with a patient at Dr. Munde's Dental World"
+            className="h-full w-full object-cover object-[72%_22%]"
+            rounded="rounded-none"
+          />
+          {/* fade the left edge of the photo into the section background */}
+          <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-surface-2/40 via-surface-2/10 to-transparent" />
+        </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={`tel:${siteConfig.phone.tel}`}
-                className="flex items-center gap-2 rounded-full bg-brand px-6 py-3.5 text-sm font-medium text-white hover:bg-brand-dark transition-colors"
-              >
-                <PhoneIcon className="h-4 w-4" /> Call {siteConfig.phone.display}
-              </a>
-              <Link
-                href="/contact"
-                className="flex items-center gap-2 rounded-full border border-line px-6 py-3.5 text-sm font-medium text-ink hover:border-brand hover:text-brand transition-colors"
-              >
-                Book an appointment
-              </Link>
+        <div className="container-page relative py-16 md:py-24 lg:py-28">
+          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            {/* Left: copy */}
+            <div className="relative z-10">
+              <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand">
+                <span className="h-px w-8 bg-brand" />
+                Healthy Teeth &nbsp;•&nbsp; Confident Smiles &nbsp;•&nbsp; Lifelong Care
+              </p>
+
+              <h1 className="font-display mt-5 text-[2.75rem] leading-[1.05] font-bold text-ink md:text-[3.75rem] lg:text-[4.25rem]">
+                Smile More.
+                <br />
+                <span className="text-brand">Worry Less.</span>
+              </h1>
+
+              <p className="mt-6 max-w-md text-[17px] leading-7 text-muted">
+                From routine checkups to advanced treatments, we're here to
+                keep your smile healthy, beautiful and confident — right
+                here in {siteConfig.city}.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  href="/contact"
+                  className="flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand/20 transition-colors hover:bg-brand-dark"
+                >
+                  <ClockIcon className="h-4 w-4" /> Book Appointment
+                </Link>
+                <a
+                  href={`tel:${siteConfig.phone.tel}`}
+                  className="flex items-center gap-2 rounded-full border border-line bg-white/80 px-7 py-3.5 text-sm font-semibold text-ink backdrop-blur transition-colors hover:border-brand hover:text-brand"
+                >
+                  <PhoneIcon className="h-4 w-4" /> Call Now
+                </a>
+              </div>
+
+              {/* Rating row */}
+              <div className="mt-9 flex flex-wrap items-center gap-8 border-t border-line pt-7">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-bold text-[#4285F4]">G</span>
+                  <div>
+                    <div className="flex items-center gap-1 text-amber-400">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <StarIcon key={i} className="h-4 w-4" />
+                      ))}
+                    </div>
+                    <p className="text-sm">
+                      <span className="font-semibold text-ink">{HERO_RATING}</span>{" "}
+                      <span className="text-muted">Google Rating ({HERO_REVIEWS} reviews)</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="font-display text-xl font-bold text-ink">{HERO_PATIENTS}</p>
+                  <p className="text-xs text-muted">Happy Patients</p>
+                </div>
+
+                <div>
+                  <p className="font-display text-xl font-bold text-ink">{HERO_YEARS}</p>
+                  <p className="text-xs text-muted">Years Experience</p>
+                </div>
+              </div>
+
+              {/* Quick feature strip */}
+              <div className="mt-7 flex flex-wrap gap-x-8 gap-y-4 border-t border-line pt-6">
+                {quickServices.map((service) => {
+                  const Icon = ICONS[service.icon] ?? ICONS.tooth;
+                  return (
+                    <div key={service.title} className="flex items-center gap-2.5">
+                      <Icon className="h-6 w-6 text-brand" />
+                      <div>
+                        <p className="text-sm font-medium text-ink">{service.title}</p>
+                        <p className="text-xs text-muted">{service.description}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
-            <dl className="mt-10 grid grid-cols-3 gap-6 max-w-md border-t border-line pt-6">
-              <div>
-                <dt className="text-xs text-muted">Care for</dt>
-                <dd className="font-display text-xl font-semibold text-ink">All ages</dd>
+            {/* Right: floating cards over the full-bleed photo (photo itself
+                is the absolutely-positioned layer above, so this column is
+                just a spacer that holds the cards in place). Kept small and
+                pinned to the true corners so they sit on hair/background,
+                clear of the face. */}
+            <div className="relative hidden min-h-[600px] lg:block">
+              {/* Floating before/after card — pinned to the very top-right corner */}
+              <div className="absolute top-2 right-2 w-44 overflow-hidden rounded-xl bg-white p-1 shadow-xl ring-1 ring-line">
+                <div className="grid grid-cols-2 gap-1">
+                  <div className="relative overflow-hidden rounded-lg">
+                    <SitePhoto
+                      src={BEFORE_IMG}
+                      alt="Before treatment"
+                      className="h-16 w-full bg-slate-100 object-cover"
+                    />
+                    <span className="absolute bottom-1 left-1 rounded-full bg-black/60 px-1.5 py-0.5 text-[9px] font-medium text-white">
+                      Before
+                    </span>
+                  </div>
+                  <div className="relative overflow-hidden rounded-lg">
+                    <SitePhoto
+                      src={AFTER_IMG}
+                      alt="After treatment"
+                      className="h-16 w-full bg-slate-100 object-cover"
+                    />
+                    <span className="absolute bottom-1 left-1 rounded-full bg-brand px-1.5 py-0.5 text-[9px] font-medium text-white">
+                      After
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div>
-                <dt className="text-xs text-muted">Services</dt>
-                <dd className="font-display text-xl font-semibold text-ink">{siteConfig.services.length}+</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-muted">Location</dt>
-                <dd className="font-display text-xl font-semibold text-ink">Narayan Nagar</dd>
-              </div>
-            </dl>
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <SitePhoto
-              src="/images/clinic-exterior.webp"
-              alt="Clinic exterior"
-              className="col-span-2 h-64"
-            />
-            <SitePhoto
-              src="/images/Treatmentroom.webp"
-              alt="Treatment room"
-              className="h-44"
-            />
-            <SitePhoto
-              src="/images/dratwork.jpg"
-              alt="Doctor at work"
-              className="h-44"
-            />
+              {/* Handwritten-style tag — tucked above the quick-links card,
+                  clear of the before/after card and the face */}
+              <p className="font-display absolute right-4 top-[13.5rem] -rotate-6 text-base italic text-brand drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)]">
+                Your Smile,
+                <br />
+                Our Commitment ♥
+              </p>
+
+              {/* Floating quick-links card — pinned to the bottom-right corner */}
+              <div className="absolute bottom-2 right-2 w-52 rounded-xl bg-white p-3.5 shadow-xl ring-1 ring-line">
+                <ul className="divide-y divide-line">
+                  {quickServices.map((service) => {
+                    const Icon = ICONS[service.icon] ?? ICONS.tooth;
+                    return (
+                      <li key={service.title} className="flex items-center justify-between gap-2.5 py-2 first:pt-0 last:pb-0">
+                        <span className="flex items-center gap-2 text-[13px] font-medium text-ink">
+                          <Icon className="h-4 w-4 shrink-0 text-brand" />
+                          {service.title}
+                        </span>
+                        <span className="text-muted">›</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+
+            {/* Mobile-only simplified image (floating cards hidden below lg) */}
+            <div className="lg:hidden">
+              <SitePhoto
+                src={HERO_PHOTO}
+                alt="Female dentist smiling with a patient at Dr. Munde's Dental World"
+                className="h-72 w-full rounded-2xl object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -108,8 +238,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      
 
       {/* Services preview */}
       <section className="py-16 md:py-20">
