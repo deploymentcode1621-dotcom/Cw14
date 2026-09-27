@@ -44,7 +44,7 @@ export default function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer className="relative bg-ink text-white/90">
+    <footer className="relative overflow-hidden bg-ink text-white/90">
       {/* Seam against the CTA section above: a brighter accent line plus a
           faint dark overlay, so the footer reads as its own section instead
           of blending straight into the CTA band above it. */}
@@ -55,6 +55,15 @@ export default function Footer() {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-black/10"
+      />
+      {/* Soft glow accents for depth, kept subtle so text stays legible */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-24 right-0 h-64 w-64 rounded-full bg-amber/10 blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-24 left-0 h-64 w-64 rounded-full bg-brand/10 blur-3xl"
       />
 
       <div className="container-page relative grid gap-12 py-16 md:grid-cols-12">
@@ -69,7 +78,7 @@ export default function Footer() {
 
           <a
             href={`tel:${siteConfig.phone.tel}`}
-            className="mt-7 inline-flex items-center rounded-full bg-amber px-5 py-2.5 text-sm font-medium text-ink transition-opacity duration-300 hover:opacity-90"
+            className="mt-7 inline-flex items-center rounded-full bg-amber px-5 py-2.5 text-sm font-medium text-ink shadow-lg shadow-amber/20 transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90"
           >
             Call to book a visit
           </a>
@@ -81,7 +90,7 @@ export default function Footer() {
                   key={s.key}
                   href={s.href}
                   aria-label={s.key}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/60 transition-colors duration-300 hover:border-amber hover:text-amber"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-amber hover:text-amber"
                 >
                   <SocialIcon platform={s.key} />
                 </a>
@@ -91,15 +100,20 @@ export default function Footer() {
         </div>
 
         <div className="md:col-span-3">
-          <p className="text-sm font-medium text-white/50">Pages</p>
+          <p className="text-sm font-medium uppercase tracking-wide text-white/50">
+            Pages
+          </p>
           <ul className="mt-5 space-y-3 text-sm">
             {pages.map(([label, href]) => (
               <li key={href}>
                 <Link
                   href={href}
-                  className="text-white/65 transition-colors duration-300 hover:text-white"
+                  className="group inline-flex items-center text-white/65 transition-colors duration-300 hover:text-white"
                 >
-                  {label}
+                  <span className="relative">
+                    {label}
+                    <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-amber transition-all duration-300 group-hover:w-full" />
+                  </span>
                 </Link>
               </li>
             ))}
@@ -107,7 +121,9 @@ export default function Footer() {
         </div>
 
         <div className="md:col-span-4">
-          <p className="text-sm font-medium text-white/50">Visit us</p>
+          <p className="text-sm font-medium uppercase tracking-wide text-white/50">
+            Visit us
+          </p>
           <ul className="mt-5 space-y-4 text-sm text-white/65">
             <li className="flex gap-3">
               <MapPinIcon className="mt-0.5 h-4 w-4 shrink-0 text-amber" />
@@ -144,7 +160,21 @@ export default function Footer() {
             © {new Date().getFullYear()} {siteConfig.clinicName}. All rights
             reserved.
           </p>
-          <p>{siteConfig.city}, Maharashtra</p>
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span>{siteConfig.city}, Maharashtra</span>
+            <span className="hidden text-white/20 md:inline">|</span>
+            <span>
+              Designed &amp; Developed by{" "}
+              <a
+                href="https://codewinxitsolution.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-white/60 transition-colors duration-300 hover:text-amber"
+              >
+                CODEWINX IT SOLUTION
+              </a>
+            </span>
+          </p>
         </div>
       </div>
     </footer>
