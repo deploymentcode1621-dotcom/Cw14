@@ -16,11 +16,10 @@ const HERO_REVIEWS = siteConfig.reviewCount ?? "500+";
 const HERO_PATIENTS = siteConfig.patientsCount ?? "5000+";
 const HERO_YEARS = siteConfig.yearsExperience ?? "15+";
 
-// Before/after photos for the floating card. Point these at real patient
-// photos (with consent) in /public/images — falling back to existing
-// images so nothing breaks if you haven't added them yet.
-const BEFORE_IMG = siteConfig.beforeAfter?.before ?? "/images/before-smile.jpg";
-const AFTER_IMG = siteConfig.beforeAfter?.after ?? "/images/after-smile.jpg";
+// Single combined before/after photo for the floating card.
+// Save your image at /public/images/before-after-smile.jpg
+// (or update siteConfig.beforeAfter.image to point at a different path/name).
+const BEFORE_AFTER_IMG = siteConfig.beforeAfter?.image ?? "/images/before-after-smile.jpeg";
 
 // Main hero photo — full-bleed image on the right side of the hero.
 // IMPORTANT: this filename must match EXACTLY what's in /public/images
@@ -70,9 +69,9 @@ export default function HomePage() {
               </p>
 
               <h1 className="font-display mt-5 text-[2.75rem] leading-[1.05] font-bold text-ink md:text-[3.75rem] lg:text-[4.25rem]">
-                Smile More.
+                Smile More
                 <br />
-                <span className="text-brand">Worry Less.</span>
+                <span className="text-brand">Worry Less</span>
               </h1>
 
               <p className="mt-6 max-w-md text-[17px] leading-7 text-muted">
@@ -147,29 +146,21 @@ export default function HomePage() {
                 pinned to the true corners so they sit on hair/background,
                 clear of the face. */}
             <div className="relative hidden min-h-[600px] lg:block">
-              {/* Floating before/after card — pinned to the very top-right corner */}
+              {/* Floating before/after card — single combined image,
+                  pinned to the very top-right corner */}
               <div className="absolute top-2 right-2 w-44 overflow-hidden rounded-xl bg-white p-1 shadow-xl ring-1 ring-line">
-                <div className="grid grid-cols-2 gap-1">
-                  <div className="relative overflow-hidden rounded-lg">
-                    <SitePhoto
-                      src={BEFORE_IMG}
-                      alt="Before treatment"
-                      className="h-16 w-full bg-slate-100 object-cover"
-                    />
-                    <span className="absolute bottom-1 left-1 rounded-full bg-black/60 px-1.5 py-0.5 text-[9px] font-medium text-white">
-                      Before
-                    </span>
-                  </div>
-                  <div className="relative overflow-hidden rounded-lg">
-                    <SitePhoto
-                      src={AFTER_IMG}
-                      alt="After treatment"
-                      className="h-16 w-full bg-slate-100 object-cover"
-                    />
-                    <span className="absolute bottom-1 left-1 rounded-full bg-brand px-1.5 py-0.5 text-[9px] font-medium text-white">
-                      After
-                    </span>
-                  </div>
+                <div className="relative overflow-hidden rounded-lg">
+                  <SitePhoto
+                    src={BEFORE_AFTER_IMG}
+                    alt="Before and after teeth whitening results"
+                    className="h-32 w-full bg-slate-100 object-cover"
+                  />
+                  <span className="absolute bottom-1 left-1 rounded-full bg-black/60 px-1.5 py-0.5 text-[9px] font-medium text-white">
+                    Before
+                  </span>
+                  <span className="absolute bottom-1 right-1 rounded-full bg-brand px-1.5 py-0.5 text-[9px] font-medium text-white">
+                    After
+                  </span>
                 </div>
               </div>
 
