@@ -167,27 +167,20 @@ export default function HomePage() {
 
         {/* Floating cards — anchored to the hero photo, desktop only */}
         <div className="pointer-events-none absolute inset-0 hidden lg:block">
-          {/* Before / after strip — TODO: replace both photos with real
-              patient before/after images once you have documented
-              consent to publish them. */}
-          <div className="pointer-events-auto absolute right-12 top-28 flex overflow-hidden rounded-2xl border border-line bg-white shadow-lg xl:right-20">
-            <div className="relative h-24 w-24">
+          {/* Before / after card — single combined photo (already split
+              before/after, so no need for two separate images or a
+              second overlay line). Saved at /public/images/before-after-smile.jpeg */}
+          <div className="pointer-events-auto absolute right-12 top-28 w-48 overflow-hidden rounded-2xl border border-line bg-white shadow-lg xl:right-20">
+            <div className="relative h-28 w-full">
               <SitePhoto
-                src="/images/clinic-exterior.webp"
-                alt="Before treatment"
+                src="/images/before-after-smile.jpeg"
+                alt="Before and after teeth whitening results"
                 className="h-full w-full"
               />
               <span className="absolute bottom-1 left-1 rounded-full bg-ink/80 px-2 py-0.5 text-[10px] font-medium text-white">
                 Before
               </span>
-            </div>
-            <div className="relative h-24 w-24">
-              <SitePhoto
-                src="/images/Treatmentroom.webp"
-                alt="After treatment"
-                className="h-full w-full"
-              />
-              <span className="absolute bottom-1 left-1 rounded-full bg-brand px-2 py-0.5 text-[10px] font-medium text-white">
+              <span className="absolute bottom-1 right-1 rounded-full bg-brand px-2 py-0.5 text-[10px] font-medium text-white">
                 After
               </span>
             </div>
